@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, ChangeEvent } from 'react';
+import Header from './components/Header';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface InputState {
+    initialInvestment: number;
+    annualInvestment: number;
+    expectedReturn: number;
+    duration: number;
 }
 
-export default App
+const App: React.FC = () => {
+    const [inputValue, setInputValue] = useState<InputState>({
+        initialInvestment: 1000,
+        annualInvestment: 12000,
+        expectedReturn: 10,
+        duration: 10,
+    });
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>, fieldName: keyof InputState) => {
+        setInputValue({
+            ...inputValue,
+            [fieldName]: parseInt(e.target.value, 10)
+        });
+    };
+
+    return (
+        <>
+            <Header/>
+            <div>
+                <label>Initial Investment</label>
+                <input type='text' value={inputValue.initialInvestment} onChange={(e) => handleInputChange(e, 'initialInvestment')} />
+                <p>You typed: {inputValue.initialInvestment}</p>
+            </div>
+            <div>
+                <label>Annual Investment</label>
+                <input type='text' value={inputValue.annualInvestment} onChange={(e) => handleInputChange(e, 'annualInvestment')} />
+                <p>You typed: {inputValue.annualInvestment}</p>
+            </div>
+            <div>
+                <label>Expected Return</label>
+                <input type='text' value={inputValue.expectedReturn} onChange={(e) => handleInputChange(e, 'expectedReturn')} />
+                <p>You typed: {inputValue.expectedReturn}</p>
+            </div>
+            <div>
+                <label>Duration</label>
+                <input type='text' value={inputValue.duration} onChange={(e) => handleInputChange(e, 'duration')} />
+                <p>You typed: {inputValue.duration}</p>
+            </div>
+        </>
+    );
+};
+
+export default App;
